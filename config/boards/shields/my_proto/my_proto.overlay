@@ -4,7 +4,9 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
+        /* ZMK内部でディスプレイとして認識させるための必須定義 */
         zephyr,display = &oled;
+        /* バッテリー警告を解消するための定義 */
         zmk,battery = &vbatt;
     };
 
@@ -31,7 +33,8 @@
 
 &xiao_i2c {
     status = "okay";
-    /* 修正: 未定義プロパティである sda-gpios, scl-gpios を削除しました */
+    /* 通信が不安定な場合、周波数を100kHzに落として安定させます */
+    clock-frequency = <100000>;
 
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
@@ -39,8 +42,10 @@
         width = <128>;
         height = <32>;
         display-offset = <0>;
+        /* 0.91インチ(32px)の場合、multiplex-ratioは 31 (height - 1) が正解です */
         multiplex-ratio = <31>;
         segment-offset = <0>;
+        /* Zephyr 4.1.0で必須となったプロパティ */
         page-offset = <0>;
         prechargep = <0x22>;
     };
