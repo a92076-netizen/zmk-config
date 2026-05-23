@@ -45,5 +45,6 @@
         segment-offset = <0>;
         page-offset = <0>;
         prechargep = <0x22>;
+        clock-frequency = <100000>;
     };
 };
