@@ -9,15 +9,15 @@
 
         default_layer {
             bindings = <
-                &kp A  &kp B
-                &kp C  &mo 1
+                &kp A  &kp B  &kp C  &kp D
+                &kp E  &kp F  &kp G  &mo 1
             >;
         };
 
         bt_layer {
             bindings = <
-                &bt BT_CLR  &out OUT_BLE
-                &none       &none
+                &bt BT_CLR  &out OUT_BLE  &none  &none
+                &none       &none         &none  &none
             >;
         };
     };
