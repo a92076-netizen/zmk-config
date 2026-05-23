@@ -11,13 +11,11 @@
         compatible = "zmk,kscan-gpio-matrix";
         diode-direction = "col2row";
 
-        /* 行のピン: D0 と D3 を使用 */
         row-gpios
             = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             ;
 
-        /* 列のピン: D1 と D2 を使用 */
         col-gpios
             = <&xiao_d 1 GPIO_ACTIVE_HIGH>
             , <&xiao_d 2 GPIO_ACTIVE_HIGH>
@@ -42,11 +40,5 @@
         segment-offset = <0>;
         page-offset = <0>;
         prechargep = <0x22>;
-    };
-};
-
-/ {
-    chosen {
-        zmk,display = &oled;
     };
 };
