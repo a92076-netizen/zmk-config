@@ -4,7 +4,10 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        zmk,display = &oled;
+        /* 修正: zmk,display ではなく zephyr,display を使用します */
+        zephyr,display = &oled;
+        /* 修正: バッテリー警告を解消するための指定（ボード側の定義を参照します） */
+        zmk,battery = &vbatt;
     };
 
     kscan0: kscan {
@@ -23,6 +26,15 @@
             , <&xiao_d 7 GPIO_ACTIVE_HIGH>
             ;
     };
+
+    /* XIAO BLEの電圧監視ノードの定義（警告解消用） */
+    vbatt: vbatt {
+        compatible = "zmk,battery-voltage-divider";
+        label = "BATTERY";
+        io-channels = <&adc 7>;
+        output-ohms = <2000000>;
+        full-ohms = <(2000000 + 806000)>;
+    };
 };
 
 &xiao_i2c {
@@ -36,7 +48,7 @@
         display-offset = <0>;
         multiplex-ratio = <31>;
         segment-offset = <0>;
-        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
+        page-offset = <0>;
         prechargep = <0x22>;
     };
 };
