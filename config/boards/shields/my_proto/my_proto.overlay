@@ -41,7 +41,7 @@
 
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
-        reg = <0x3c>; /* 多くのモジュールは0x3cですが、映らない場合は0x3dを試してください */
+        reg = <0x3d>; /* 多くのモジュールは0x3cですが、映らない場合は0x3dを試してください */
         width = <128>;
         height = <32>;
         display-offset = <0>;
