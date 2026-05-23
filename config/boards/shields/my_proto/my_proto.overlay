@@ -4,9 +4,8 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        /* 修正: zmk,display ではなく zephyr,display を使用します */
+        /* ZMKの表示システムが参照するノードを指定 */
         zephyr,display = &oled;
-        /* 修正: バッテリー警告を解消するための指定（ボード側の定義を参照します） */
         zmk,battery = &vbatt;
     };
 
@@ -42,13 +41,14 @@
 
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
-        reg = <0x3d>;
+        reg = <0x3c>; /* 多くのモジュールは0x3cですが、映らない場合は0x3dを試してください */
         width = <128>;
         height = <32>;
         display-offset = <0>;
+        /* 128x32の場合、multiplex-ratioは (高さ - 1) の 31 が適切です */
         multiplex-ratio = <31>;
         segment-offset = <0>;
-        page-offset = <0>;
+        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
     };
 };
