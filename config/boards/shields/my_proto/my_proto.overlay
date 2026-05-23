@@ -33,12 +33,10 @@
         reg = <0x3c>;
         width = <128>;
         height = <32>;
-        segment-remap;
-        page-remap;
         display-offset = <0>;
         multiplex-ratio = <31>;
         segment-offset = <0>;
-        page-offset = <0>;
+        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
     };
 };
