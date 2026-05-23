@@ -33,7 +33,7 @@
 
 &xiao_i2c {
     status = "okay";
-    /* 通信が不安定な場合、周波数を100kHzに落として安定させます */
+    /* 通信エラーを防ぐため低速(100kHz)に設定 */
     clock-frequency = <100000>;
 
     oled: ssd1306@3c {
@@ -42,11 +42,13 @@
         width = <128>;
         height = <32>;
         display-offset = <0>;
-        /* 0.91インチ(32px)の場合、multiplex-ratioは 31 (height - 1) が正解です */
         multiplex-ratio = <31>;
         segment-offset = <0>;
-        /* Zephyr 4.1.0で必須となったプロパティ */
-        page-offset = <0>;
+        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
+        
+        /* 128x32 OLEDで初期化失敗を防ぐための追加設定 */
+        com-invdir;
+        segment-remap;
     };
 };
