@@ -1,8 +1,0 @@
-file_format: "1"
-id: my_macro_pad
-name: My Macro Pad
-type: shield
-url: https://github.com/yourname/my-zmk-config
-requires: [seeeduino_xiao_ble]
-features:
-  - keys
