@@ -51,6 +51,5 @@
         segment-offset = <0>;
         page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
-        contrast = <128>;
     };
 };
