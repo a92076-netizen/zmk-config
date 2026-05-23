@@ -4,11 +4,13 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
+        zmk,display = &oled;
     };
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         diode-direction = "col2row";
+
         /* 行のピン: D0 と D3 を使用 */
         row-gpios
             = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
@@ -38,6 +40,7 @@
         display-offset = <0>;
         multiplex-ratio = <31>;
         segment-offset = <0>;
+        page-offset = <0>;
         prechargep = <0x22>;
     };
 };
