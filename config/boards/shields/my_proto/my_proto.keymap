@@ -6,14 +6,14 @@
 / {
     keymap {
         compatible = "zmk,keymap";
-
         default_layer {
+            display-name = "Base";
             bindings = <
                 &kp A  &kp B  &kp C  &kp D
                 &kp E  &kp F  &kp G  &mo 1
             >;
         };
-
+            display-name = "BT Control";
         bt_layer {
             bindings = <
                 &bt BT_CLR  &out OUT_BLE  &none  &none
