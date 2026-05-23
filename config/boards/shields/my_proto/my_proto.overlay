@@ -4,7 +4,6 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        /* ZMKの表示システムが参照するノードを指定 */
         zephyr,display = &oled;
         zmk,battery = &vbatt;
     };
@@ -12,12 +11,10 @@
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         diode-direction = "col2row";
-
         row-gpios
             = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             ;
-
         col-gpios
             = <&xiao_d 1 GPIO_ACTIVE_HIGH>
             , <&xiao_d 2 GPIO_ACTIVE_HIGH>
@@ -26,10 +23,8 @@
             ;
     };
 
-    /* XIAO BLEの電圧監視ノードの定義（警告解消用） */
     vbatt: vbatt {
         compatible = "zmk,battery-voltage-divider";
-        label = "BATTERY";
         io-channels = <&adc 7>;
         output-ohms = <2000000>;
         full-ohms = <(2000000 + 806000)>;
@@ -38,18 +33,17 @@
 
 &xiao_i2c {
     status = "okay";
-    sda-gpios = <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    scl-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    /* 修正: 未定義プロパティである sda-gpios, scl-gpios を削除しました */
+
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
-        reg = <0x3c>; /* 多くのモジュールは0x3cですが、映らない場合は0x3dを試してください */
+        reg = <0x3c>;
         width = <128>;
         height = <32>;
         display-offset = <0>;
-        /* 128x32の場合、multiplex-ratioは (高さ - 1) の 31 が適切です */
         multiplex-ratio = <31>;
         segment-offset = <0>;
-        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
+        page-offset = <0>;
         prechargep = <0x22>;
     };
 };
