@@ -38,10 +38,11 @@
 
 &xiao_i2c {
     status = "okay";
-
+    sda-gpios = <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    scl-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
-        reg = <0x3d>; /* 多くのモジュールは0x3cですが、映らない場合は0x3dを試してください */
+        reg = <0x3c>; /* 多くのモジュールは0x3cですが、映らない場合は0x3dを試してください */
         width = <128>;
         height = <32>;
         display-offset = <0>;
@@ -50,5 +51,6 @@
         segment-offset = <0>;
         page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
+        contrast = <128>;
     };
 };
