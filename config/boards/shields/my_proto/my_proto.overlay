@@ -38,6 +38,7 @@
 
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
+        reset-gpios = <&xiao_d7 GPIO_ACTIVE_LOW>;
         reg = <0x3c>;
         width = <128>;
         height = <32>;
