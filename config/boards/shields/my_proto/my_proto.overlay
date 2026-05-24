@@ -50,6 +50,5 @@
         /* 128x32 OLEDで初期化失敗を防ぐための追加設定 */
         com-invdir;
         segment-remap;
-        com-sequential;  /* 128x64パネルで多くの場合に必要です */
     };
 };
