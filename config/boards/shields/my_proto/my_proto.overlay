@@ -38,7 +38,6 @@
 
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
-        reset-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;
         reg = <0x3c>;
         width = <128>;
         height = <32>;
@@ -47,11 +46,11 @@
         segment-offset = <0>;
         page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
-        com-sequential;  /* これをまず追加して試す */
-        segment-remap;   /* 左右反転 */
-        com-invdir;      /* 上下反転 */
-        /* 128x32 OLEDで初期化失敗を防ぐための追加設定 */
-        com-invdir;
+        /* リセットピンの定義：D6ピンを使用する場合 */
+        /* 物理配線：OLEDのRES(RESET)ピンをXIAOのD6へ接続してください */
+        reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
+        /* 128x32の標準的な表示設定 */
         segment-remap;
+        com-invdir;
     };
 };
