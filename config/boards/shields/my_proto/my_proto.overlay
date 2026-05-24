@@ -46,7 +46,9 @@
         segment-offset = <0>;
         page-offset = <0>;      /* Zephyr 4.1.0で必須 */
         prechargep = <0x22>;
-        
+        com-sequential;  /* これをまず追加して試す */
+        segment-remap;   /* 左右反転 */
+        com-invdir;      /* 上下反転 */
         /* 128x32 OLEDで初期化失敗を防ぐための追加設定 */
         com-invdir;
         segment-remap;
