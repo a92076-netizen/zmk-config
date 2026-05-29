@@ -4,57 +4,65 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        /* ZMK内部でディスプレイとして認識させるための必須定義 */
+        zmk,matrix_transform = &default_transform;
         zephyr,display = &oled;
-        /* バッテリー警告を解消するための定義 */
         zmk,battery = &vbatt;
     };
 
+    /* キーボードマトリクスの定義 */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
         diode-direction = "col2row";
-        row-gpios
-            = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            ;
-        col-gpios
-            = <&xiao_d 1 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 2 GPIO_ACTIVE_HIGH>
-            ;
+        row-gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios = <&xiao_d 2 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 3 GPIO_ACTIVE_HIGH>;
     };
 
+    /* マトリクス変換の定義 (2x2) */
+    default_transform: matrix_transform {
+        compatible = "zmk,matrix-transform";
+        columns = <2>;
+        rows = <2>;
+        map = <
+            RC(0,0) RC(0,1)
+            RC(1,0) RC(1,1)
+        >;
+    };
+
+    /* バッテリー電圧監視の定義 (エラー箇所) */
     vbatt: vbatt {
         compatible = "zmk,battery-voltage-divider";
-        io-channels = <&adc 7>;
-        output-ohms = <2000000>;
-        full-ohms = <(2000000 + 806000)>;
+        label = "BATTERY";
+        /* XIAO BLEのP0.14(AIN7)を使用 */
+        io-channels = <&adc 7>; 
+        full-ohms = <1000000>;
+        output-ohms = <510000>;
     };
 };
 
-
 &xiao_i2c {
     status = "okay";
-    /* 通信エラーを防ぐため低速(100kHz)に設定 */
     clock-frequency = <100000>;
 
+    /* OLED 128x32 ディスプレイの定義 */
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
-        label = "DISPLAY";
         width = <128>;
-        height = <32>;
+        height = <64>;
         display-offset = <0>;
-        multiplex-ratio = <31>;
+        multiplex-ratio = <63>;
         segment-offset = <0>;
-        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
+        page-offset = <0>;
         prechargep = <0x22>;
-        /* リセットピンの定義：D6ピンを使用する場合 */
-        /* 物理配線：OLEDのRES(RESET)ピンをXIAOのD6へ接続してください */
-        reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
-        /* 128x32の標準的な表示設定 */
         segment-remap;
         com-invdir;
-        com-sequential;
-
     };
+};
+
+/* ADCを有効化 (バッテリー監視に必要) */
+&adc {
+    status = "okay";
 };
