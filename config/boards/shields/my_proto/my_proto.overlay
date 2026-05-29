@@ -61,7 +61,7 @@
         reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
         segment-remap;
         com-invdir;
-        init-delay-ms = <20000>;
+        init-delay-ms = <100>;
     };
 };
 
