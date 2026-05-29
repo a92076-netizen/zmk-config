@@ -6,18 +6,20 @@
 / {
     keymap {
         compatible = "zmk,keymap";
+
         default_layer {
             display-name = "Base";
             bindings = <
-                &kp A  &kp B
-                &kp C  &mo 1
+                &kp A &kp B
+                &kp C &mo 1
             >;
         };
-            display-name = "BT Control";
+
         bt_layer {
+            display-name = "BT Control";
             bindings = <
-                &bt BT_CLR  &out OUT_BLE
-                &none       &none
+                &bt BT_CLR &out OUT_BLE
+                &none      &none
             >;
         };
     };
