@@ -33,20 +33,28 @@
 
 
 &xiao_i2c {
+    status = "okay";
+    /* 通信エラーを防ぐため低速(100kHz)に設定 */
+    clock-frequency = <10000>;
+
     oled: ssd1306@3c {
-            compatible = "solomon,ssd1306fb";
-            reg = <0x3c>;
-            label = "DISPLAY";
-            width = <128>;
-            height = <32>;
-            segment-offset = <0>;
-            page-offset = <0>;
-            display-offset = <0>;
-            multiplex-ratio = <31>;
-            segment-remap;
-            com-invdir;
-            com-sequential;
-            prechargep = <0x22>;
-            reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        label = "DISPLAY";
+        width = <128>;
+        height = <32>;
+        display-offset = <0>;
+        multiplex-ratio = <31>;
+        segment-offset = <0>;
+        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
+        prechargep = <0x22>;
+        /* リセットピンの定義：D6ピンを使用する場合 */
+        /* 物理配線：OLEDのRES(RESET)ピンをXIAOのD6へ接続してください */
+        reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
+        /* 128x32の標準的な表示設定 */
+        segment-remap;
+        com-invdir;
+        com-sequential;
+
     };
 };
