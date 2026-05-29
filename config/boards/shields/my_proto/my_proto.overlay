@@ -4,9 +4,37 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        /* ディスプレイの有効化（ここを修正しました） */
+        zmk,matrix_transform = &default_transform;
         zephyr,display = &oled;
         zmk,battery = &vbatt;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+        diode-direction = "col2row";
+        row-gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios = <&xiao_d 2 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 3 GPIO_ACTIVE_HIGH>;
+    };
+
+    default_transform: matrix_transform {
+        compatible = "zmk,matrix-transform";
+        columns = <2>;
+        rows = <2>;
+        map = <
+            RC(0,0) RC(0,1)
+            RC(1,0) RC(1,1)
+        >;
+    };
+
+    vbatt: vbatt {
+        compatible = "zmk,battery-voltage-divider";
+        label = "BATTERY";
+        voltage-divider-gpios = <&xiao_d 4 GPIO_ACTIVE_HIGH>;
+        full-ohms = <1000000>;
+        output-ohms = <510000>;
     };
 };
 
@@ -14,7 +42,6 @@
     status = "okay";
     clock-frequency = <100000>;
 
-    /* SSD1306 128x32 (リセットピンあり) の定義を復活させました */
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
@@ -25,11 +52,7 @@
         segment-offset = <0>;
         page-offset = <0>;
         prechargep = <0x22>;
-        
-        /* リセットピンを D6 に接続している設定 */
         reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
-        
-        /* 表示を安定させる標準設定 */
         segment-remap;
         com-invdir;
     };
