@@ -4,11 +4,11 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        /* ZMK内部でディスプレイとして認識させるための必須定義 */
+        /* 正しい記述に修正 */
         zephyr,display = &oled;
-        /* バッテリー警告を解消するための定義 */
         zmk,battery = &vbatt;
     };
+};
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
@@ -31,29 +31,26 @@
     };
 };
 
-
 &xiao_i2c {
     status = "okay";
-    /* 通信エラーを防ぐため低速(100kHz)に設定 */
     clock-frequency = <100000>;
 
+    /* 以下の oled 定義がソース [1] で欠落しています */
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
-        label = "DISPLAY";
         width = <128>;
         height = <32>;
         display-offset = <0>;
         multiplex-ratio = <31>;
         segment-offset = <0>;
-        page-offset = <0>;      /* Zephyr 4.1.0で必須 */
+        page-offset = <0>;
         prechargep = <0x22>;
-        /* リセットピンの定義：D6ピンを使用する場合 */
-        /* 物理配線：OLEDのRES(RESET)ピンをXIAOのD6へ接続してください */
+        /* リセットピンの設定 */
         reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
-        /* 128x32の標準的な表示設定 */
+        
+        /* 128x32で表示を安定させる標準設定 */
         segment-remap;
         com-invdir;
-        com-sequential;
     };
 };
