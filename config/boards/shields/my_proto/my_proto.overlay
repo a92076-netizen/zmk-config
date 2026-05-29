@@ -35,7 +35,7 @@
 &xiao_i2c {
     status = "okay";
     /* 通信エラーを防ぐため低速(100kHz)に設定 */
-    clock-frequency = <10000>;
+    clock-frequency = <100000>;
 
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
@@ -55,6 +55,5 @@
         segment-remap;
         com-invdir;
         com-sequential;
-
     };
 };
