@@ -44,7 +44,7 @@
 
 &xiao_i2c {
     status = "okay";
-    clock-frequency = <100000>;
+    /*     clock-frequency = <100000>; */
 
     /* OLED 128x32 ディスプレイの定義 */
     oled: ssd1306@3c {
