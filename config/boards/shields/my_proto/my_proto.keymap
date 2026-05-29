@@ -6,7 +6,7 @@
 / {
     keymap {
         compatible = "zmk,keymap";
-
+        init-delay-ms = <100>;
         default_layer {
             display-name = "Base";
             bindings = <
