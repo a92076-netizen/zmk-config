@@ -4,30 +4,9 @@
 / {
     chosen {
         zmk,kscan = &kscan0;
-        /* 正しい記述に修正 */
+        /* ディスプレイの有効化（ここを修正しました） */
         zephyr,display = &oled;
         zmk,battery = &vbatt;
-    };
-};
-
-    kscan0: kscan {
-        compatible = "zmk,kscan-gpio-matrix";
-        diode-direction = "col2row";
-        row-gpios
-            = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            ;
-        col-gpios
-            = <&xiao_d 1 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 2 GPIO_ACTIVE_HIGH>
-            ;
-    };
-
-    vbatt: vbatt {
-        compatible = "zmk,battery-voltage-divider";
-        io-channels = <&adc 7>;
-        output-ohms = <2000000>;
-        full-ohms = <(2000000 + 806000)>;
     };
 };
 
@@ -35,7 +14,7 @@
     status = "okay";
     clock-frequency = <100000>;
 
-    /* 以下の oled 定義がソース [1] で欠落しています */
+    /* SSD1306 128x32 (リセットピンあり) の定義を復活させました */
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
@@ -46,10 +25,11 @@
         segment-offset = <0>;
         page-offset = <0>;
         prechargep = <0x22>;
-        /* リセットピンの設定 */
+        
+        /* リセットピンを D6 に接続している設定 */
         reset-gpios = <&xiao_d 6 GPIO_ACTIVE_LOW>;
         
-        /* 128x32で表示を安定させる標準設定 */
+        /* 表示を安定させる標準設定 */
         segment-remap;
         com-invdir;
     };
