@@ -40,6 +40,7 @@
     oled: ssd1306@3c {
         compatible = "solomon,ssd1306fb";
         reg = <0x3c>;
+        label = "DISPLAY";
         width = <128>;
         height = <32>;
         display-offset = <0>;
@@ -53,5 +54,7 @@
         /* 128x32の標準的な表示設定 */
         segment-remap;
         com-invdir;
+        com-sequential;
+
     };
 };
